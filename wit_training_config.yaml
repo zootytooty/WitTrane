@@ -1,0 +1,23 @@
+intents:
+  - whats_on
+  - recommend_music
+  - recommend_gig
+
+traits:
+  venue:
+    - "303"
+    - birds_basement
+    - brunswick_green
+    - jazzlab
+    - open_studio
+    - paris_cat
+    - spotted_mallard
+    - uptown_cafe
+    - bar_open
+
+entities:
+  - sample
+
+utterances:
+  - sample
+
