@@ -4,67 +4,42 @@ Parses the values provided in the config to create intents, entities, traits &
  ultimately utterances based on them.
 """
 
-#%%
 import os
-from typing import List
+from time import sleep
 
 import yaml
 from wit import Wit
 
-config = yaml.safe_load(open("config.yaml"))
+from src.traits import create_traits
+from src.intents import create_intents
+from src.entities import create_entities
+from src.utterances import permute_utterance
+from src.utils import chunks
 
 
-#%%
-def create_intents(wit_client: Wit, intents: List[str]) -> None:
-    """Creates Wit Intents.
-
-    Args:
-        wit_client (Wit): Instantiated Wit Client
-        intents (List[str]): All intents to be created.
-    """
-    existing_intents = [x["name"] for x in wit_client.intent_list()]
-    # Definitely can be done more efficiently
-    intents_to_create = [x for x in intents if x not in existing_intents]
-    intents_to_skip = [x for x in intents if x in existing_intents]
-
-    print(f"Skipping intents as they already exist: {intents_to_skip}")
-
-    for intent in intents_to_create:
-        try:
-            print(f"Creating: {intent}")
-            wit_client.create_intent(intent)
-            print(f"Intent '{intent}' created")
-        except Exception as ex:
-            print(f"Unable to create: {intent}")
-            print(ex)
+config = yaml.safe_load(open("wit_training_config.yaml"))
 
 
-#%%
-def create_traits(wit_client: Wit, traits: dict) -> None:
-    """Create Wit Traits.
-
-    Args:
-        wit_client (Wit): Instantiated Wit Client
-        traits (List[dict]): Each dict should have a key for
-    """
-
-    existing_traits = [x["name"] for x in wit_client.trait_list()]
-    for trait in traits:
-        print(f"Creating Trait: {trait}")
-
-        # Traits can be added by sending new values one by one but for
-        # simplicities (and possibly speeds) sake, drop the existing verion
-        #  & totally replace it
-        if trait in existing_traits:
-            print(f"Trait '{trait}' already exists. Removing existing values")
-            wit_client.delete_trait(trait)
-
-        wit_client.create_trait(trait_name=trait, values=traits[trait])
-
-
-#%%
 if __name__ == "__main__":
     client = Wit(os.getenv("WIT_TOKEN"))
 
-    create_intents(client, config["intents"])
+    # First define the core attributes required
+    create_intents(client, list(config["intents"].keys()))
     create_traits(client, config["traits"])
+    create_entities(client, list(config["entities"].keys()))
+
+    # Build each utterance sequence & train wit on them
+    for intent in config["intents"]:
+        print(f"Training utterances for intent: {intent}")
+        for utterance in config["intents"][intent]:
+            new_utterances = permute_utterance(utterance, intent, config)
+
+            if len(new_utterances) >= 200:
+                # Wit has a rate limit of 200 utterances per minute, so we'll chunk and go slow
+                new_utterances_chunks = chunks(new_utterances, 200)
+                for chunk in new_utterances_chunks:
+                    client.train(chunk)
+                    sleep(61)  # an extra second just cos
+            else:
+                client.train(new_utterances)
+                sleep(61)  # an extra second just cos
