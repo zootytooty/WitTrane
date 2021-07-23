@@ -4,8 +4,8 @@ from itertools import chain
 from operator import methodcaller
 from typing import List
 
-from traits import build_trait
-from entities import build_entity
+from src.traits import build_trait
+from src.entities import build_entity
 
 
 def extract_component(

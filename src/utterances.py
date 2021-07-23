@@ -4,8 +4,8 @@ from itertools import product
 from re import compile, findall
 from typing import List
 
-from utils import extract_component, component_substitute_values, create_value
-from entities import assign_entity_start_end
+from src.utils import extract_component, component_substitute_values, create_value
+from src.entities import assign_entity_start_end
 
 
 def permute_utterance(utterance: str, intent: str, config: dict) -> List[dict]:
