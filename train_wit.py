@@ -7,6 +7,7 @@ Parses the values provided in the config to create intents, entities, traits &
 import os
 from time import sleep
 
+from tqdm import tqdm
 import yaml
 from wit import Wit
 
@@ -29,17 +30,18 @@ if __name__ == "__main__":
     create_entities(client, list(config["entities"].keys()))
 
     # Build each utterance sequence & train wit on them
+    new_utterances = []
     for intent in config["intents"]:
         print(f"Training utterances for intent: {intent}")
         for utterance in config["intents"][intent]:
-            new_utterances = permute_utterance(utterance, intent, config)
+            new_utterances.extend(permute_utterance(utterance, intent, config))
 
-            if len(new_utterances) >= 200:
-                # Wit has a rate limit of 200 utterances per minute, so we'll chunk and go slow
-                new_utterances_chunks = chunks(new_utterances, 200)
-                for chunk in new_utterances_chunks:
-                    client.train(chunk)
-                    sleep(61)  # an extra second just cos
-            else:
-                client.train(new_utterances)
-                sleep(61)  # an extra second just cos
+    # Wit has a rate limit of 200 utterances per minute, so we'll chunk and go slow if needed
+    if len(new_utterances) >= 200:
+        new_utterances_chunks = chunks(new_utterances, 200)
+        for chunk in tqdm(new_utterances_chunks):
+            client.train(chunk)
+            sleep(61)  # an extra second just cos
+    else:
+        client.train(new_utterances)
+        sleep(61)  # an extra second just cos
