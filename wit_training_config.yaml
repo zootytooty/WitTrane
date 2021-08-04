@@ -1,37 +1,64 @@
 intents:
   whats_on:
     - "yo zoot, what's on at {traits_venue} {entities_wit$datetime:datetime}"
+    - "yo zoot, what's on at {traits_venue} {entities_wit$datetime:datetime}?"
     - "Yo zoot, what's on {entities_wit$datetime:datetime}"
     - "What's on at {traits_venue} {entities_wit$datetime:datetime}"
+    - "What's on at {traits_venue} {entities_wit$datetime:datetime}?"
     - "What's on {entities_wit$datetime:datetime}"
     - "whats on?"
     - "What's on at {traits_venue}"
+    - "What's on at {traits_venue}?"
     - "Who's playing {entities_wit$datetime:datetime}"
     - "Who's playing {entities_wit$datetime:datetime} at {traits_venue}"
     - "Who's playing at {traits_venue}"
+    - "Who's playing {entities_wit$datetime:datetime} at {traits_venue}?"
+    - "Who's playing at {traits_venue}?"
     - "whos playing?"
     - "What's happenning {entities_wit$datetime:datetime}"
     - "What's happenning {entities_wit$datetime:datetime} at {traits_venue}"
+    - "What's happenning {entities_wit$datetime:datetime} at {traits_venue}?"
     - "What's happenning at {traits_venue}"
+    - "What's happenning at {traits_venue}?"
     - "What's happenning?"
     - "Are there any gigs {entities_wit$datetime:datetime}?"
     - "Are there any gigs {entities_wit$datetime:datetime} at {traits_venue}?"
+    - "Are there any gigs {entities_wit$datetime:datetime} at {traits_venue}"
     - "Are there any gigs at {traits_venue}?"
+    - "Are there any gigs at {traits_venue}"
     - "Are there any gigs?"
     - "Are there any gigs coming up?"
     - "what gigs are on?"
     - "what gigs are on {entities_wit$datetime:datetime}?"
     - "what gigs are on {entities_wit$datetime:datetime} at {traits_venue}?"
+    - "what gigs are on {entities_wit$datetime:datetime} at {traits_venue}"
     - "what gigs are on at {traits_venue}?"
+    - "what gigs are on at {traits_venue}"
     - "whats crackalackin"
     - "Anything on {entities_wit$datetime:datetime}?"
     - "Anything on {entities_wit$datetime:datetime} at {traits_venue}?"
+    - "Anything on {entities_wit$datetime:datetime} at {traits_venue}"
     - "Anything on at {traits_venue}?"
+    - "Anything on at {traits_venue}"
 
   help:
     - "help me"
     - "Help!"
     - "What can you do?"
+
+  unsure:
+    - "sgkjna983r"
+    - "when's your birthday?"
+    - "haappity bday, Zoot"
+    - "who do I have to kill to get Avishai Cohen to come back?"
+    - 
+
+  hello:
+    - "hiya"
+    - "hello"
+    - "hey"
+    - "hi"
+    - "sup"
 
 
 traits:
