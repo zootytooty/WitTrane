@@ -51,7 +51,7 @@ intents:
     - "when's your birthday?"
     - "haappity bday, Zoot"
     - "who do I have to kill to get Avishai Cohen to come back?"
-    - 
+
 
   hello:
     - "hiya"
@@ -59,6 +59,15 @@ intents:
     - "hey"
     - "hi"
     - "sup"
+
+  venues:
+    - "venues"
+    - "what venues are there?"
+    - "what venues are there"
+    - "What're the hip joints around town?"
+    - "What're the hip joints around town"
+    - "Where are the cool hangs?"
+    - "Where are the cool hangs"
 
 
 traits:
