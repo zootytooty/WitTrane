@@ -25,9 +25,14 @@ if __name__ == "__main__":
     client = Wit(os.getenv("WIT_TOKEN"))
 
     # First define the core attributes required
-    create_intents(client, list(config["intents"].keys()))
-    create_traits(client, config["traits"])
-    create_entities(client, list(config["entities"].keys()))
+    if "intents" in config and config.get("intents") is not None:
+        create_intents(client, list(config["intents"].keys()))
+    
+    if "traits" in config and config.get("traits") is not None:
+        create_traits(client, config["traits"])
+
+    if "entities" in config and config.get("entities") is not None:
+        create_entities(client, list(config["entities"].keys()))
 
     # Build each utterance sequence & train wit on them
     new_utterances = []
